@@ -22,7 +22,13 @@ class FaceDetector {
                 results.forEach { result in
                     alignmentTransform = result.alignmentTransform
                     let testTransform = CGAffineTransform(a: 1.05225372, b: -0.26685286, c: 0.26685286, d: 1.05225372, tx: 16.64849909, ty:30.91795823 )
-                    let newImage = UIImage(ciImage: CIImage(cgImage: originalImage.cgImage!).transformed(by: testTransform))
+                    let ciContext = CIContext()
+//                    let cgImage = ciContext.createCGImage(originalImage,
+//                                                          fromRect: originalImage.extent)
+                    let transformedCIImage = CIImage(cgImage: originalImage.cgImage!).transformed(by: testTransform)
+                    let newCGImage = ciContext.createCGImage(transformedCIImage, from: transformedCIImage.extent)
+                    let newImage = UIImage(cgImage: newCGImage!);
+//                    let newImage = UIImage(ciImage: CIImage(cgImage: originalImage.cgImage!).transformed(by: testTransform))
                     complete(newImage)
                     print(alignmentTransform)
                 }
@@ -30,6 +36,32 @@ class FaceDetector {
         }
         let vnImage = VNSequenceRequestHandler()
         try? vnImage.perform([translationRequest], on: CIImage(cgImage: floatingDotImage.cgImage!))
+    }
+    
+    open func gaussianblurImages(image1: UIImage, image2: UIImage) -> (out1:UIImage, out2:UIImage) {
+        let gaussianFilter = CIFilter(name: "CIGaussianBlur")
+        let ciin1 = CIImage.init(cgImage: image1.cgImage!)
+        let ciin2 = CIImage.init(cgImage: image2.cgImage!)
+        
+        
+        /* see different filters available at
+        https://developer.apple.com/library/content/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html#//apple_ref/doc/filter/ci/CIMultiplyBlendMode
+        https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_tasks/ci_tasks.html#//apple_ref/doc/uid/TP30001185-CH3-TPXREF101
+        */
+        gaussianFilter?.setValue(ciin1, forKey: "inputImage")
+        let ciout1 = gaussianFilter!.outputImage!
+        gaussianFilter?.setValue(ciin2, forKey: "inputImage")
+        let ciout2 = gaussianFilter!.outputImage!
+        
+        let cidivout2 = ciout2.applyingFilter("CIDivideBlendMode", parameters: ["inputImage": ciin2, "inputBackgroundImage": ciout2])
+        let cimulout2 = cidivout2.applyingFilter("CIMultiplyBlendMode", parameters: ["inputImage": cidivout2, "inputBackgroundImage": ciout1])
+        
+        
+        let ciContext = CIContext()
+        let blurImage1 = UIImage(cgImage:ciContext.createCGImage(ciout1, from: ciout1.extent)!)
+        let blurImage2 = UIImage(cgImage:ciContext.createCGImage(cimulout2, from: cimulout2.extent)!)
+
+        return (out1: blurImage1, out2: blurImage2)
     }
     
     open func highlightLips(for source: UIImage, complete: @escaping (UIImage, VNFaceLandmarks2D?) -> Void) {
@@ -152,10 +184,10 @@ class FaceDetector {
         let rectHeight = source.size.height * boundingRect.size.height
         
         //draw image
-//        let rect = CGRect(x: 0, y:0, width: source.size.width, height: source.size.height)
-//        context.draw(source.cgImage!, in: rect)
-//        
-//        
+        let rect = CGRect(x: 0, y:0, width: source.size.width, height: source.size.height)
+        context.draw(source.cgImage!, in: rect)
+        
+//
         //draw bound rect
 //        var fillColor = UIColor.green
 //        fillColor.setStroke()

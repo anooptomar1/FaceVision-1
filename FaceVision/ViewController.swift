@@ -31,6 +31,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var inputImage2: UIImageView!
     @IBOutlet weak var outputImage: UIImageView!
 
+    var image1: UIImage?
+    var image2: UIImage?
+    var outputIm: UIImage?
+    
     var img1Landmark: VNFaceLandmarks2D!
     var img2Landmark: VNFaceLandmarks2D!
     
@@ -41,16 +45,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func addImages() {
-        guard let image1 = UIImage(named: "tim"),
+        guard let image1 = UIImage(named: "kim"),
             let image2 = UIImage(named: "Trump") else { return }
         
+        self.image1 = image1
+        self.image2 = image2
         self.inputImage1.image = image1
         self.inputImage2.image = image2
 
-//        findFeatures(image1: image1, image2: image2) {
-//            self.translateImage2ToImage1()
-//        }
-        addLipstick(image1: UIImage(named: "mvince")!, image2: UIImage(named: "patelkev")!, image3: UIImage(named: "jherron")!)
+        findFeatures(image1: image1, image2: image2) {
+            self.translateImage2ToImage1()
+        }
+//        addLipstick(image1: UIImage(named: "mvince")!, image2: UIImage(named: "patelkev")!, image3: UIImage(named: "jherron")!)
     }
     
     func addLipstick(image1: UIImage, image2: UIImage, image3: UIImage)  {
@@ -118,9 +124,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func translateImage2ToImage1() {
         let originalImage = UIImage(named:"Trump")
         faceDetector.translateImages(for: self.inputImage1.image!, floatingDotImage: self.inputImage2.image!, originalImage: originalImage!) { (resultImage) in
+            self.outputIm = resultImage
             self.outputImage.image = resultImage
+            self.blurImages()
 //            self.inputImage2.image = originalImage
 //            self.inputImage1.image = UIImage.init(named: "kim")
+        }
+    }
+    
+    func blurImages() {
+        let result = faceDetector.gaussianblurImages(image1: self.image1!, image2: self.outputIm!)
+        DispatchQueue.main.async {
+            self.inputImage1.image = result.out1
+            self.outputImage.image = result.out2
         }
     }
 }
