@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.17" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13168.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13147.4"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,31 +20,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rIg-9M-FPP">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                            </imageView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bJl-yp-bLR">
-                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <items>
-                                    <barButtonItem systemItem="camera" id="6Sj-P6-OJQ">
-                                        <connections>
-                                            <action selector="selectImageWithSender:" destination="BYZ-38-t0r" id="jjg-GH-JNF"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                            </toolbar>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="A12-PB-OIb">
+                                <rect key="frame" x="50" y="20" width="275" height="647.5"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rIg-9M-FPP">
+                                        <rect key="frame" x="0.0" y="0.0" width="275" height="202.5"/>
+                                    </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3c1-gV-MFa">
+                                        <rect key="frame" x="0.0" y="222.5" width="275" height="202.5"/>
+                                    </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HFC-Jo-H5k">
+                                        <rect key="frame" x="0.0" y="445" width="275" height="202.5"/>
+                                    </imageView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="rIg-9M-FPP" secondAttribute="trailing" id="5Ch-DT-3b0"/>
-                            <constraint firstItem="rIg-9M-FPP" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="QkX-Bq-3nE"/>
-                            <constraint firstItem="rIg-9M-FPP" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="mFL-7X-Lan"/>
-                            <constraint firstAttribute="bottom" secondItem="rIg-9M-FPP" secondAttribute="bottom" id="nwC-PM-BtI"/>
+                            <constraint firstItem="A12-PB-OIb" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="50" id="7ZA-x5-E5a"/>
+                            <constraint firstAttribute="trailing" secondItem="A12-PB-OIb" secondAttribute="trailing" constant="50" id="Ilx-1n-VPe"/>
+                            <constraint firstItem="A12-PB-OIb" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Q2e-CQ-grk"/>
+                            <constraint firstAttribute="bottom" secondItem="A12-PB-OIb" secondAttribute="bottom" id="nAC-IR-0SG"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="imageView" destination="rIg-9M-FPP" id="2jB-HU-99F"/>
+                        <outlet property="inputImage1" destination="rIg-9M-FPP" id="2F2-Nz-qwx"/>
+                        <outlet property="inputImage2" destination="3c1-gV-MFa" id="PXv-7Q-aiU"/>
+                        <outlet property="outputImage" destination="HFC-Jo-H5k" id="aB8-VR-EI2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
